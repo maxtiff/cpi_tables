@@ -10,9 +10,9 @@ dropColumns <- function(list, data) {
 ## tabRemoval removes errant tabs found at the end of line of some BLS data files
 tabRemoval <- function(file) {
 
-  if(file == grep("^(series)")) {
+  # if(file == grep("^(series)")) {
     #next
-  } else {
+  # } else {
     
     conn <- readLines(file)
     newConn <- file
@@ -23,7 +23,7 @@ tabRemoval <- function(file) {
       writeLines(newLine,con = newConn,sep="\n")
 
     }
-  }
+  # }
 }
 
 rowRemoval <- function(data) {

@@ -1,6 +1,5 @@
 #
-# main.R
-# Author: tmay
+# main.R contains the complete scripted process.
 #
 
 ### Initialization
@@ -31,10 +30,10 @@ areaDrop <- c('selectable')
 area <- dropColumns(areaDrop,area)
 
 ## Merge 'series' and 'item' tables by item_code.
-blsItemSeries <- merge(series,item,by='item_code',all.x=T)
+mergedItemSeries <- merge(series,item,by='item_code',all.x=T)
 
 ## Remove rows of series that use the old baseline for CPI inflation from cu.series file
-blsItemSeries <- dropOldBase(blsItemSeries) #[!grepl("(base)$",blsItemSeries$item_name),]
+mergedItemSeries <- dropOldBase(mergedItemSeries) #[!grepl("(base)$",blsItemSeries$item_name),]
 
-		
-blsAreaSeries <- merge(blsItemSeries,area,by='area_code')#,all.x=T)
+## Merge 'area' with previously merged 'item' and 'series' tables.
+mergedAreaSeries <- merge(mergedItemSeries,area,by='area_code')#,all.x=T)

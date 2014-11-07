@@ -1,5 +1,5 @@
 #
-# main.R contains the complete scripted process.
+# main.R contains the complete, scripted process.
 #
 
 ### Initialization
@@ -15,8 +15,10 @@ library(jsonlite)
 
 blsFiles <- c('area','item','series','periodicity')
 
+## Download files from source
 downloadBls(blsFiles)
 
+## Read files into data tables for manipulation.
 for(data in blsFiles) {
   assign(data,readBls(data))
 }

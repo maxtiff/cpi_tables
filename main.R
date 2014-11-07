@@ -8,7 +8,7 @@
 setwd("~/cpi_tables")
 
 ## Load required scripts from workflow
-required.scripts <- c('reader.R','clean.R','api_loader.R')
+required.scripts <- c('reader.R','clean.R','api_loader.R','error.R')
 sapply(required.scripts, source, .GlobalEnv)
 
 ## Load required libraries

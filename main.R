@@ -22,13 +22,19 @@ for(data in blsFiles) {
   assign(data,readBls(data))
 }
 
-## Remove unecessary columns from cu.series
+## Remove unnecessary columns from cu.series
 seriesDrop <- c('begin_year','begin_period','end_year','end_period','footnote_codes')
 series <- dropColumns(seriesDrop, series)
 
+## Remove unnecessary columns from 'area' table
+areaDrop <- c('selectable')
+area <- dropColumns(areaDrop,area)
+
+## Merge 'series' and 'item' tables by item_code.
 blsItemSeries <- merge(series,item,by='item_code',all.x=T)
 
 ## Remove rows of series that use the old baseline for CPI inflation from cu.series file
-blsItemSeries <- blsItemSeries[!grepl("(base)$",blsItemSeries$item_name),]
+blsItemSeries <- dropOldBase(blsItemSeries) #[!grepl("(base)$",blsItemSeries$item_name),]
 
+		
 blsAreaSeries <- merge(blsItemSeries,area,by='area_code')#,all.x=T)

@@ -1,6 +1,6 @@
-##    This module loads all URL information to call previous vintage from FRED API.
-##    Improve documentation universality, and naming conventions.
-##
+#   api_loader.R loads all URL information to call series information from the FRED API.
+#   Improve documentation universality, and naming conventions.
+#
 
 ## Base url setters and getters
 set.BaseURL <- function() {

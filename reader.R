@@ -19,7 +19,7 @@ downloadBls <- function(list) {
 
     }
 
-  for (item in list) {
+  for (text in list) {
 
     destination <- paste(path,item,sep="")
 
@@ -27,7 +27,7 @@ downloadBls <- function(list) {
 
     if (!file.exists(destination)) {
 
-      download.file(paste('http://download.bls.gov/pub/time.series/cu/cu',item,sep="."),destfile = destination)
+      download.file(paste('http://download.bls.gov/pub/time.series/cu/cu',text,sep="."),destfile = destination)
       tabRemoval(destination)
 
     } else if (file.exists(destination)) {

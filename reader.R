@@ -13,15 +13,13 @@ downloadBls <- function(list) {
 
     } else {
 
-      print("Something has gone awry. Terminating system.")
-      # If this were a legit program you'd insert logging right 'bout here.
-      stop()
+      error()
 
     }
 
   for (text in list) {
 
-    destination <- paste(path,item,sep="")
+    destination <- paste(path,text,sep="")
 
     fileExistsMsg <- paste("File:",destination,"already exists. Continuing ...",sep=" ")
 
@@ -36,9 +34,7 @@ downloadBls <- function(list) {
 
     } else {
 
-      errorMsg <- "Something has gone awry. Terminating system."
-      # If this were a legit program you'd insert logging right 'bout here.
-      stop()
+      error()
 
     }
   }

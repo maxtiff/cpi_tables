@@ -5,7 +5,7 @@
 
 ### Initialization
 ## Set the working directory
-setwd("~/scripts/R/bls/CPI")4
+setwd("~/cpi_tables")
 
 ## Load required scripts from workflow
 required.scripts <- c('reader.R','clean.R','api_loader.R')

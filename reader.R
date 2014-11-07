@@ -1,13 +1,13 @@
 ##  downloadBls() function takes a list of BLS data files and, iff they don't exist, saves them to the data directory
-##  (which is created iff it doesn't exist).
+##  (which is created iff it doesn't exist). Any cleaning is also carried out during this function.
 downloadBls <- function(list) {
-    path <- 'data/'
+    path <- 'data'
 
     if (!file.exists(path)) {
 
       dir.create(path)
 
-    } else if (suppressWarnings(file.exists(path))) {
+    } else if (file.exists(path)) {
 
       #continue
 
@@ -19,7 +19,7 @@ downloadBls <- function(list) {
 
   for (text in list) {
 
-    destination <- paste(path,text,sep="")
+    destination <- paste(path,text,sep="/")
 
     fileExistsMsg <- paste("File:",destination,"already exists. Continuing ...",sep=" ")
 

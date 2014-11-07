@@ -48,7 +48,7 @@ downloadBls <- function(list) {
 ##  readBls() function takes a cleaned and locally stored bls descriptive file title (i.e. 'series', 'item', &tc)
 ##  and returns that file in a readable, tab delimited format.
 readBls <- function(bls_file) {
-# return(read.table(paste('data',bls_file,sep="/"),header=TRUE,fill=TRUE,quote = ""))
-  return(read.table(paste('data',bls_file,sep="/"),sep="\t",header=TRUE,fill=TRUE,quote = ""))
+ return(read.table(paste('data',bls_file,sep="/"),header=TRUE,fill=TRUE,quote = "",sep="\t"))
+  # return(read.table(paste('data',bls_file,sep="/"),sep="\t",header=TRUE,fill=TRUE,quote = ""))
 
 }

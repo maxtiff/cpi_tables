@@ -19,7 +19,7 @@ get.BaseURL <- function() {
 ## Series directory setter and getter
 set.Dir <- function() {
 
-  return('series')
+  return('release')
 
 }
 
@@ -32,7 +32,7 @@ get.Dir <- function() {
 ##Type, i.e. 'observations', setter and getter
 set.Type <- function() {
 
-  return('observations')
+  return('series')
 
 }
 
@@ -42,14 +42,6 @@ get.Type <- function() {
 
 }
 
-## Units setter and getter. Set to 'change' by default/
-set.Units <- function() {
-
-  base <- "units"
-  units <- "lin"
-  return(paste(base,units,sep="="))
-
-}
 
 get.Units <- function() {
 
@@ -87,7 +79,7 @@ get.APIKey <- function() {
 
 }
 
-## Directory url setter and getter <<- http://api.stlouisfed.org/fred/series
+## Directory url setter and getter <<- http://api.stlouisfed.org/fred/release
 set.dirURL <- function() {
 
   base <- get.BaseURL()
@@ -102,7 +94,7 @@ get.dirURL <- function() {
 
 }
 
-## Type url setter and getter <<- http://api.stlouisfed.org/fred/series/observations
+## Type url setter and getter <<- http://api.stlouisfed.org/fred/release/series
 set.typeURL <- function() {
 
   base <- get.dirURL()
@@ -118,42 +110,6 @@ get.typeURL <- function() {
 
 }
 
-## Pull metadata JSON file to determine appropriate window size.
-get.metadata <- function(series) {
-
-  # pulls information about series from API
-  # needs restructured
-  base <- get.dirURL()
-  key <- get.APIKey()
-  api <- paste(base,key,sep="?")
-  series.base <- "series_id"
-  series.id <- paste(series.base,series,sep="=")
-  file.type <- get.fileType()
-  meta.url <- paste(api,series.id,file.type,sep="&")
-
-  return(fromJSON(meta.url))
-
-}
-
-get.allvintages <- function(series) {
-
-  base <- get.dirURL()
-  type <- "vintagedates"
-  vints <- paste(base,type,sep="/")
-  key <- get.APIKey()
-  api <- paste(vints,key,sep="?")
-  series.base <- "series_id"
-  series.id <- paste(series.base,series,sep="=")
-  file.type <- get.fileType()
-  vint.query <- paste(api,series.id,file.type,sep="&")
-
-  object <- fromJSON(vint.query)
-
-  return(data.frame(object$vintage_dates))
-
-}
-
-
 ## Url to pull series observations
 set.finalURL<- function() {
 
@@ -161,8 +117,7 @@ set.finalURL<- function() {
   key <- get.APIKey()
   api <- paste(base,key,sep="?")
   file.type <- get.fileType()
-  units <- get.Units()
-  url <- paste(api,file.type,units,sep="&")
+  url <- paste(api,file.type,sep="&")
 
   return(url)
 
@@ -174,21 +129,10 @@ get.finalURL <- function() {
 
 }
 
-get.vintage <- function(date) {
-
-  base <- get.finalURL()
-  param <- "vintage_dates"
-  vint <- date
-  query <- paste(param,vint,sep="=")
-
-  return(paste(base,query,sep="&"))
-
-}
-
 get.JSON <- function(id) {
 
   base<- get.finalURL()
-  series<- paste(base,'&series_id=',id,sep="")
+  series<- paste(base,'&release_id=',id,sep="")
 
   # Get json from url. Error out if url is not successful.
   if (url_success(series) == TRUE) {
@@ -216,20 +160,9 @@ get.data <- function(object) {
   data <- data.frame(object$observations)
 
   # Drop realtime start and end
-  drops <- c("realtime_start","realtime_end")
-  data <- data[,!(names(data) %in% drops)]
+  keeps <- c("series_id","title")
+  data <- data[(names(data) %in% keeps)]
 
-  # Convert observation date to appropriate format for time-series analysis
-  data$date <- strptime(data$date, format="%Y-%m-%d")
-
-  # Convert to numeric type, ignore NA coercion warning
-  data$value <- suppressWarnings(as.numeric(data$value))
-
-  # Drop NA values.
-  data <- na.omit(data)
-
-  # Standardize data in order to detect outliers
-  data$value <- scale(data$value)
 
   return(data)
 

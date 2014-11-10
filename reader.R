@@ -1,7 +1,7 @@
 ##  downloadBls() function takes a list of BLS data files and, iff they don't exist, saves them to the data directory
 ##  (which is created iff it doesn't exist). Any cleaning is also carried out during this function.
 downloadBls <- function(list) {
-    path <- 'data'
+    path <- normalizePath('data')
 
     if (!file.exists(path)) {
 

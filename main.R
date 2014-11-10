@@ -4,7 +4,8 @@
 
 ### Initialization
 ## Set the working directory
-setwd("~/cpi_tables")
+workingDir <- normalizePath('..\\cpi_tables')
+setwd(workingDir)
 
 ## Load required scripts from workflow
 required.scripts <- c('reader.R','clean.R','api_loader.R','error.R')
@@ -12,6 +13,7 @@ sapply(required.scripts, source, .GlobalEnv)
 
 ## Load required libraries
 library(jsonlite)
+library(httr)
 
 blsFiles <- c('area','item','series','periodicity')
 
@@ -39,3 +41,8 @@ mergedItemSeries <- dropOldBase(mergedItemSeries) #[!grepl("(base)$",blsItemSeri
 
 ## Merge 'area' with previously merged 'item' and 'series' tables.
 mergedAreaSeries <- merge(mergedItemSeries,area,by='area_code')#,all.x=T)
+
+
+release <- 10
+object <- get.JSON(release)
+data <- get.data(object)

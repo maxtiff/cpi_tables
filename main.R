@@ -42,7 +42,7 @@ mergedItemSeries <- dropOldBase(mergedItemSeries) #[!grepl("(base)$",blsItemSeri
 ## Merge 'area' with previously merged 'item' and 'series' tables.
 mergedAreaSeries <- merge(mergedItemSeries,area,by='area_code')#,all.x=T)
 
-
+## Get FRED Release info for CPI.
 release <- 10
-object <- get.JSON(release)
+object <- get.JSON(release,'seasonal_adjustment')
 data <- get.data(object)

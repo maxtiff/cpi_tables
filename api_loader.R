@@ -129,17 +129,17 @@ get.finalURL <- function() {
 
 }
 
-get.JSON <- function(id) {
+get.JSON <- function(id, filter) {
 
   base<- get.finalURL()
-  series<- paste(base,'&release_id=',id,sep="")
+  release<- paste(base,'&release_id=',id,'&filter_variable',filter,sep="")
 
   # Get json from url. Error out if url is not successful.
-  if (url_success(series) == TRUE) {
+  if (url_success(release) == TRUE) {
 
-    return(fromJSON(series))
+    return(fromJSON(release))
 
-  } else if (url_success(series) == FALSE) {
+  } else if (url_success(release) == FALSE) {
 
     print("There was an issue when calling the API. Please check that the series id is correct.")
     # Insert error trapping
@@ -157,10 +157,10 @@ get.JSON <- function(id) {
 get.data <- function(object) {
 
   # Convert JSON object to data frame for processing
-  data <- data.frame(object$observations)
+  data <- data.frame(object$seriess)
 
   # Drop realtime start and end
-  keeps <- c("series_id","title")
+  keeps <- c("id","title", "frequency_short", "seasonal_adjustment_short")
   data <- data[(names(data) %in% keeps)]
 
 

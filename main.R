@@ -8,7 +8,7 @@ workingDir <- normalizePath('..\\cpi_tables')
 setwd(workingDir)
 
 ## Load required scripts from workflow
-required.scripts <- c('reader.R','clean.R','api_loader.R','error.R')
+required.scripts <- c('reader.R','clean.R','api_loader.R','error.R','filter.R')
 sapply(required.scripts, source, .GlobalEnv)
 
 ## Load required libraries
@@ -41,6 +41,15 @@ mergedItemSeries <- dropOldBase(mergedItemSeries) #[!grepl("(base)$",blsItemSeri
 
 ## Merge 'area' with previously merged 'item' and 'series' tables.
 mergedAreaSeries <- merge(mergedItemSeries,area,by='area_code')#,all.x=T)
+
+## Create Seasonally Adjusted Monthly Table
+seasonalMonthly <- filter(mergedAreaSeries,'R','S')
+
+## Create Unadjusted Monthly Table
+nonseasonalMonthly <- filter(mergedAreaSeries,'R','U')
+
+## Create Unadjusted Semiannual Table
+nonseasonalSemi <- filter(mergedAreaSeries,'S','U')
 
 ## Get FRED Release info for CPI.
 release <- 10

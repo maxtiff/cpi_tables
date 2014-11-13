@@ -18,6 +18,7 @@ tabRemoval <- function(file) {
   tabCheck <- grepl("(\\t)$",readLines(file)[2])
 
   if ( tabCheck == TRUE) {
+    print(paste("Cleaning",file,sep=" "))
 
     conn <- readLines(file)
     newConn <- file

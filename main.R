@@ -14,6 +14,7 @@ sapply(required.scripts, source, .GlobalEnv)
 ## Load required libraries
 library(jsonlite)
 library(httr)
+library(XML)
 
 blsFiles <- c('area','item','series','periodicity')
 
@@ -40,7 +41,7 @@ mergedItemSeries <- merge(series,item,by='item_code',all.x=T)
 mergedItemSeries <- dropOldBase(mergedItemSeries) #[!grepl("(base)$",blsItemSeries$item_name),]
 
 ## Merge 'area' with previously merged 'item' and 'series' tables.
-mergedAreaSeries <- merge(mergedItemSeries,area,by='area_code')#,all.x=T)
+mergedAreaSeries <- merge(mergedItemSeries,area,by='area_code',all.x=T)
 
 ## Create Seasonally Adjusted Monthly Table
 seasonalMonthly <- filter(mergedAreaSeries,'R','S')

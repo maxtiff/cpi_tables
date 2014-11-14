@@ -10,5 +10,7 @@ for (item in areas) {
     assign(item,fred_series[!grepl('in',fred_series$title),])
   }
 }
-
-test <- merge(fred_series,us,by='title',all.y=T,)
+fred_series$title <- toupper(fred_series$title)
+nonseasonalMonthlyUS$title <- toupper(nonseasonalMonthlyUS$title)
+test <- merge(fred_series,nonseasonalMonthlyUS,by='title',all.y=T,)
+test <- test[with(test, order(sort_sequence.x)),]

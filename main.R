@@ -7,14 +7,14 @@
 # workingDir <- normalizePath('..\\cpi_tables')
 # setwd(workingDir)
 
-## Load required scripts from workflow
-required.scripts <- c('reader.R','clean.R','api_loader.R','error.R','filter.R')
-sapply(required.scripts, source, .GlobalEnv)
-
 ## Load required libraries
 library(jsonlite)
 library(httr)
 library(XML)
+
+## Load required scripts from workflow
+required.scripts <- c('reader.R','clean.R','api_loader.R','error.R','filter.R')
+sapply(required.scripts, source, .GlobalEnv)
 
 blsFiles <- c('area','item','series','periodicity')
 
@@ -60,14 +60,16 @@ us <- mergedAreaSeries[grepl('U.S. city average',mergedAreaSeries$area_name),]
 us$title <- paste('Consumer Price Index for All Urban Consumers:',us[,8], sep=" ")
 mergedAreaSeries<- mergedAreaSeries[!grepl('U.S. city average',mergedAreaSeries$area_name),]
 
-## Create Seasonally Adjusted Monthly Table
-seasonalMonthly <- filter(mergedAreaSeries,'R','S')
+## Create Seasonally Adjusted Monthly Table -- US only
+seasonalMonthlyUS <- filter(us,'R','S')
 
-## Create Unadjusted Monthly Table
+## Create Unadjusted Monthly and US only table
 nonseasonalMonthly <- filter(mergedAreaSeries,'R','U')
+nonseasonalMonthlyUS <- filter(us,'R','U')
 
 ## Create Unadjusted Semiannual Table
 nonseasonalSemi <- filter(mergedAreaSeries,'S','U')
+nonseasonalSemiUS <- filter(us,'S','U')
 
 
 areaFilter(nonseasonalSemi)

@@ -4,8 +4,8 @@
 
 ### Initialization
 ## Set the working directory
-# workingDir <- normalizePath('..\\cpi_tables')
-# setwd(workingDir)
+workingDir <- normalizePath('C:\\Users\\tmay\\Documents\\scripts\\R\\bls\\cpi_tables')
+setwd(workingDir)
 
 ## Load required libraries
 library(jsonlite)
@@ -58,24 +58,25 @@ mergedAreaSeries <- merge(mergedItemSeries,area,by='area_code',all.x=T)
 ## Serpate US City Average for processing
 us <- mergedAreaSeries[grepl('U.S. city average',mergedAreaSeries$area_name),]
 us$title <- paste('Consumer Price Index for All Urban Consumers:',us[,8], sep=" ")
-mergedAreaSeries<- mergedAreaSeries[!grepl('U.S. city average',mergedAreaSeries$area_name),]
+msa<- mergedAreaSeries[!grepl('U.S. city average',mergedAreaSeries$area_name),]
+msa$title <- paste('Consumer Price Index for All Urban Consumers:',msa[,8],'in',msa[,11],sep=" ")
 
 ## Create Seasonally Adjusted Monthly Table -- US only
-seasonalMonthlyUS <- filter(us,'R','S')
+seasonalUSmonth <- filter(us,'R','S')
 
 ## Create Unadjusted Monthly and US only table
-nonseasonalMonthly <- filter(mergedAreaSeries,'R','U')
-nonseasonalMonthlyUS <- filter(us,'R','U')
+nonseasonalMonthly <- filter(msa,'R','U')
+nonseasonalUSmonth <- filter(us,'R','U')
 
 ## Create Unadjusted Semiannual Table
-nonseasonalSemi <- filter(mergedAreaSeries,'S','U')
-nonseasonalSemiUS <- filter(us,'S','U')
+nonseasonalSemi <- filter(msa,'S','U')
+nonseasonalUSSemi <- filter(us,'S','U')
 
 
-areaFilter(nonseasonalSemi)
-areaFilter(nonseasonalMonthly)
-areaFilter(seasonalMonthly)
-
-
-fred_series <- read.csv('data/fred_series.csv')
-fred_series <- fred_series[with(fred_series, order(series_id)),]
+# areaFilter(nonseasonalSemi)
+# areaFilter(nonseasonalMonthly)
+# areaFilter(seasonalMonthly)
+#
+#
+# fred_series <- read.csv('data/fred_series.csv')
+# fred_series <- fred_series[with(fred_series, order(series_id)),]

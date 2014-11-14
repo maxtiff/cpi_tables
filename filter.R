@@ -9,31 +9,38 @@ filter <- function(data, frequency, adjustment) {
 
 }
 
+fredFilter <- function(data, frequency, adjustment) {
+
+  return(data[data[,3] == adjustment & data[,4] == frequency,])
+
+
+}
+
 areaFilter <- function(data) {
 
 
   # data <- data[grepl("(base)$",data$area_name),]
   areas <- as.array(as.character(unique(data$area_code)))
 
-  for(item in areas) {
+  for(place in areas) {
     if(grepl('R', unique(data$periodicity_code)) == T & grepl('S',unique(data$seasonal)) == T) {
 
-      fileName <- paste(item,'monthly','seasonal')
+      fileName <- paste(place,'monthly','seasonal')
       fullPath <- paste('data/MS/',fileName,'.csv',sep="")
 
     } else if (grepl('R', unique(data$periodicity_code)) == T & grepl('U',unique(data$seasonal)) == T) {
 
-      fileName <- paste(item,'monthly','nonseasonal')
+      fileName <- paste(place,'monthly','nonseasonal')
       fullPath <- paste('data/MU/',fileName,'.csv',sep="")
 
     } else if (grepl('S', unique(data$periodicity_code)) == T & grepl('U',unique(data$seasonal)) == T) {
 
-      fileName <- paste(item,'semiannual','nonseasonal')
+      fileName <- paste(place,'semiannual','nonseasonal')
       fullPath <- normalizePath(paste('data/SU/',fileName,'.csv',sep=""))
 
     } else {
 
-      fileName <- paste(item)
+      fileName <- paste(place)
       fullPath <- paste('data/',fileName,'.csv',sep="")
 
     }
@@ -43,7 +50,7 @@ areaFilter <- function(data) {
     data <- dropColumns(drop, data)
 #     colnames(data)[2] <- "newname2"
 
-    suppressWarnings(write.table(assign(item,data.frame(data[grepl(item,data$area_code),])),fullPath,append=TRUE,sep=",",row.names=FALSE))
+    suppressWarnings(write.table(assign(place,data.frame(data[grepl(place,data$area_code),])),fullPath,append=TRUE,sep=",",row.names=FALSE))
 
   }
 
